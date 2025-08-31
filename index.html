@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -60,24 +59,120 @@
 
     <script>
         const torrentSiteData = [
-            { rank: 1, name: "토렌트랜드", img: "https://img.zzang11.com/UploadFile/20250704/064232토렌트랜드.png" }, { rank: 2, name: "토렌트큐큐", img: "https://img.zzang11.com/UploadFile/20241015/055733토렌트QQ.png" }, { rank: 3, name: "토렌트씨", img: "https://img.zzang11.com/UploadFile/20241017/024739토렌트씨.png" }, { rank: 4, name: "토렌트파이", img: "https://img.zzang11.com/UploadFile/20241017/044538토렌트파이.png" }, { rank: 5, name: "토렌트쓱", img: "https://img.zzang11.com/UploadFile/20241022/060107토렌트쓱.png" }, { rank: 6, name: "티프리카", img: "https://img.zzang11.com/UploadFile/20241017/024732티프리카.gif" }, { rank: 7, name: "토렌트봇", img: "https://img.zzang11.com/UploadFile/20241017/024815토렌트봇.png" }, { rank: 8, name: "토렌트썸", img: "https://img.zzang11.com/UploadFile/20241017/024745토렌트썸.png" }, { rank: 9, name: "토렌트알지", img: "https://img.zzang11.com/UploadFile/20241017/024806토랜드알지.png" }, { rank: 10, name: "토렌트팁", img: "https://img.zzang11.com/UploadFile/20241017/024830토렌트팁.png" }, { rank: 11, name: "토렌트밤", img: "https://img.zzang11.com/UploadFile/20241017/044545토렌트밤.png" }, { rank: 12, name: "토다와", img: "https://img.zzang11.com/UploadFile/20241017/044517토다와.gif" }, { rank: 13, name: "토렌트티티", img: "https://img.zzang11.com/UploadFile/20241017/044558토렌트티티.png" }, { rank: 14, name: "토렌트모바일", img: "https://img.zzang11.com/UploadFile/20241017/044608토렌트모바일.png" }, { rank: 15, name: "토팡", img: "https://img.zzang11.com/UploadFile/20241017/044617토팡.png" }, { rank: 16, name: "토렌트지", img: "https://img.zzang11.com/UploadFile/20241022/060142토렌트지.png" }, { rank: 17, name: "섹토렌트", img: "https://img.zzang11.com/UploadFile/20241017/044648섹토렌트.gif" }, { rank: 18, name: "토렌트와이", img: "https://img.zzang11.com/UploadFile/20241022/060227토렌트와이.png" }, { rank: 19, name: "토렌트하하", img: "https://img.zzang11.com/UploadFile/20241022/060248토렌트하하.png" }, { rank: 20, name: "토렌트영", img: "https://img.zzang11.com/UploadFile/20241022/055148토렌트영.png" }
+            // 기존 zzang11.com 목록
+            { rank: 1, name: "토렌트랜드", img: "https://img.zzang11.com/UploadFile/20250704/064232토렌트랜드.png" }, 
+            { rank: 2, name: "토렌트큐큐", img: "https://img.zzang11.com/UploadFile/20241015/055733토렌트QQ.png" }, 
+            { rank: 3, name: "토렌트씨", url: "https://torrentsee301.com/", img: "https://img.zzang11.com/UploadFile/20241017/024739토렌트씨.png" }, 
+            { rank: 4, name: "토렌트파이", img: "https://img.zzang11.com/UploadFile/20241017/044538토렌트파이.png" }, 
+            { rank: 5, name: "토렌트쓱", img: "https://img.zzang11.com/UploadFile/20241022/060107토렌트쓱.png" }, 
+            { rank: 6, name: "티프리카", img: "https://img.zzang11.com/UploadFile/20241017/024732티프리카.gif" }, 
+            /* '토렌트봇' 주소 변경됨 */
+            { rank: 7, name: "토렌트봇", url: "https://torrentbot209.site/", img: "https://img.zzang11.com/UploadFile/20241017/024815토렌트봇.png" }, 
+            { rank: 8, name: "토렌트썸", img: "https://img.zzang11.com/UploadFile/20241017/024745토렌트썸.png" }, 
+            { rank: 9, name: "토렌트알지", img: "https://img.zzang11.com/UploadFile/20241017/024806토랜드알지.png" }, 
+            { rank: 10, name: "토렌트팁", img: "https://img.zzang11.com/UploadFile/20241017/024830토렌트팁.png" }, 
+            { rank: 11, name: "토렌트밤", img: "https://img.zzang11.com/UploadFile/20241017/044545토렌트밤.png" }, 
+            { rank: 12, name: "토다와", img: "https://img.zzang11.com/UploadFile/20241017/044517토다와.gif" }, 
+            { rank: 13, name: "토렌트티티", img: "https://img.zzang11.com/UploadFile/20241017/044558토렌트티티.png" }, 
+            { rank: 14, name: "토렌트모바일", img: "https://img.zzang11.com/UploadFile/20241017/044608토렌트모바일.png" }, 
+            { rank: 15, name: "토팡", img: "https://img.zzang11.com/UploadFile/20241017/044617토팡.png" }, 
+            { rank: 16, name: "토렌트지", img: "https://img.zzang11.com/UploadFile/20241022/060142토렌트지.png" }, 
+            { rank: 17, name: "섹토렌트", img: "https://img.zzang11.com/UploadFile/20241017/044648섹토렌트.gif" }, 
+            { rank: 18, name: "토렌트와이", img: "https://img.zzang11.com/UploadFile/20241022/060227토렌트와이.png" }, 
+            { rank: 19, name: "토렌트하하", img: "https://img.zzang11.com/UploadFile/20241022/060248토렌트하하.png" }, 
+            { rank: 20, name: "토렌트영", img: "https://img.zzang11.com/UploadFile/20241022/055148토렌트영.png" },
+            // 사용자가 직접 추가한 목록
+            { rank: 21, name: "토렌트 좋다", url: "https://torrentzota148.com/", img: "https://cdn.imgchest.com/files/yq9c3dj8ep4.png" }
         ];
 
         document.addEventListener('DOMContentLoaded', function() {
             const siteContainer = document.querySelector('.site-container');
-            torrentSiteData.forEach(site => { const card = document.createElement('div'); card.className = 'site-card'; card.innerHTML = `<div class="drag-handle">☰</div><button class="remove-btn">×</button><span class="rank">${site.rank}</span><a href="#" target="_blank" data-site-name="${site.name}"><div class="logo-container"><img src="${site.img}"></div><h3>${site.name}</h3></a>`; siteContainer.appendChild(card); });
+            const uniqueSites = Array.from(new Map(torrentSiteData.map(site => [site.name, site])).values());
+            
+            uniqueSites.forEach(site => { 
+                const card = document.createElement('div'); 
+                card.className = 'site-card'; 
+                // site.url이 있으면 그 값을, 없으면 '#'을 기본 링크로 사용
+                card.innerHTML = `<div class="drag-handle">☰</div><button class="remove-btn">×</button><span class="rank">${site.rank}</span><a href="${site.url || '#'}" target="_blank" data-site-name="${site.name}"><div class="logo-container"><img src="${site.img}" alt="${site.name} 로고"></div><h3>${site.name}</h3></a>`; 
+                siteContainer.appendChild(card); 
+            });
+
             const STORAGE_KEY_REMOVED = 'removedTorrentSites', STORAGE_KEY_ORDER = 'torrentSiteOrder', torrentStatusDiv = document.getElementById('torrent-update-status'), restoreBtn = document.getElementById('restore-btn'), saveOrderBtn = document.getElementById('save-order-btn'), PROXY_URL = 'https://cors.eu.org/';
+            
             function applySavedOrder() { const savedOrder = JSON.parse(localStorage.getItem(STORAGE_KEY_ORDER)); if (!savedOrder) return; const itemsMap = new Map([...siteContainer.children].map(card => [card.querySelector('a').dataset.siteName, card])); savedOrder.forEach(siteName => { const card = itemsMap.get(siteName); if (card) siteContainer.appendChild(card); }); }
             function applyRemovedSites() { const removedSites = JSON.parse(localStorage.getItem(STORAGE_KEY_REMOVED)) || []; removedSites.forEach(siteName => { const siteCard = document.querySelector(`a[data-site-name="${siteName}"]`)?.closest('.site-card'); if (siteCard) siteCard.style.display = 'none'; }); }
+            
             siteContainer.addEventListener('click', function(event) { if (event.target.classList.contains('remove-btn')) { const siteCard = event.target.closest('.site-card'); const siteName = siteCard.querySelector('a').dataset.siteName; const removedSites = JSON.parse(localStorage.getItem(STORAGE_KEY_REMOVED)) || []; if (!removedSites.includes(siteName)) { removedSites.push(siteName); localStorage.setItem(STORAGE_KEY_REMOVED, JSON.stringify(removedSites)); } siteCard.style.display = 'none'; } });
-            saveOrderBtn.addEventListener('click', function() { const currentOrder = [...siteContainer.children].map(card => card.querySelector('a').dataset.siteName); localStorage.setItem(STORAGE_KEY_ORDER, JSON.stringify(currentOrder)); alert('순서가 저장되었습니다!'); });
+            saveOrderBtn.addEventListener('click', function() { const currentOrder = [...siteContainer.children].filter(card => card.style.display !== 'none').map(card => card.querySelector('a').dataset.siteName); localStorage.setItem(STORAGE_KEY_ORDER, JSON.stringify(currentOrder)); alert('순서가 저장되었습니다!'); });
             restoreBtn.addEventListener('click', function() { if (confirm('제거/순서를 초기화하시겠습니까?')) { localStorage.removeItem(STORAGE_KEY_REMOVED); localStorage.removeItem(STORAGE_KEY_ORDER); alert('초기화 완료. 페이지를 새로고침합니다.'); location.reload(); } });
+            
             new Sortable(siteContainer, { handle: '.drag-handle', animation: 150 });
-            function fetchLatestTorrentUrls() { torrentStatusDiv.textContent = '토렌트 주소 업데이트 중...'; const targetUrl = 'https://www.zzang11.com/List/%ED%86%A0%EB%A0%8C%ED%8A%B8'; fetch(PROXY_URL + targetUrl).then(res => res.ok ? res.text() : Promise.reject(res.status)).then(html => { const doc = new DOMParser().parseFromString(html, 'text/html'); let updatedCount = 0; doc.querySelectorAll('.siteList').forEach(site => { const name = site.querySelector('h3')?.innerText.trim().replace(/（.*/, '').trim(); const newUrl = site.querySelector('a')?.href; if (name && newUrl) { const link = document.querySelector(`a[data-site-name="${name}"]`); if (link) { link.href = newUrl; updatedCount++; } } }); torrentStatusDiv.textContent = `업데이트 완료! ${updatedCount}개 주소 갱신.`; torrentStatusDiv.style.backgroundColor = '#d4edda'; }).catch(e => { torrentStatusDiv.textContent = '오류: 토렌트 주소를 가져오지 못했습니다.'; torrentStatusDiv.style.backgroundColor = '#f8d7da'; }); }
+            
+            function fetchFromSource(url, parser) {
+                return fetch(PROXY_URL + url)
+                    .then(res => {
+                        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                        return res.text();
+                    })
+                    .then(html => {
+                        const doc = new DOMParser().parseFromString(html, 'text/html');
+                        return parser(doc);
+                    });
+            }
+
+            function parseZzang11(doc) {
+                let updatedCount = 0;
+                doc.querySelectorAll('.siteList').forEach(site => {
+                    const name = site.querySelector('h3')?.innerText.trim().replace(/（.*/, '').trim();
+                    const newUrl = site.querySelector('a')?.href;
+                    if (name && newUrl) {
+                        const link = document.querySelector(`a[data-site-name="${name}"]`);
+                        if (link && link.href !== newUrl) {
+                            link.href = newUrl;
+                            updatedCount++;
+                        }
+                    }
+                });
+                return updatedCount;
+            }
+
+            function parseFeedclick(doc) {
+                let updatedCount = 0;
+                doc.querySelectorAll('.entry-content p a').forEach(anchor => {
+                    // "바로가기" 와 같은 불필요한 텍스트 제거하고 순수 사이트 이름만 추출
+                    const name = anchor.innerText.trim().replace(/바로가기$/, '').trim();
+                    const newUrl = anchor.href;
+                     if (name && newUrl) {
+                        const link = document.querySelector(`a[data-site-name="${name}"]`);
+                        if (link && link.href !== newUrl) {
+                            link.href = newUrl;
+                            updatedCount++;
+                        }
+                    }
+                });
+                return updatedCount;
+            }
+
+            function fetchAllTorrentUrls() {
+                torrentStatusDiv.textContent = '토렌트 주소 업데이트 중...';
+                
+                const promise1 = fetchFromSource('https://www.zzang11.com/List/%ED%86%A0%EB%A0%8C%ED%8A%B8', parseZzang11);
+                const promise2 = fetchFromSource('https://feedclick.net/tip/11616', parseFeedclick);
+
+                Promise.all([promise1, promise2].map(p => p.catch(e => { console.error(e); return 0; })))
+                    .then(([count1, count2]) => {
+                        const totalUpdated = count1 + count2;
+                        torrentStatusDiv.textContent = `업데이트 완료! ${totalUpdated}개 주소 갱신.`;
+                        torrentStatusDiv.style.backgroundColor = '#d4edda';
+                    }).catch(() => {
+                        torrentStatusDiv.textContent = '오류: 토렌트 주소를 가져오지 못했습니다.';
+                        torrentStatusDiv.style.backgroundColor = '#f8d7da';
+                    });
+            }
             
             applySavedOrder(); 
             applyRemovedSites(); 
-            fetchLatestTorrentUrls();
+            fetchAllTorrentUrls();
         });
     </script>
 </body>
