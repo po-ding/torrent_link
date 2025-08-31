@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>토렌트 목록 관리</title>
+    <!-- SortableJS 라이브러리 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <style>
+        body { font-family: 'Malgun Gothic', '맑은 고딕', sans-serif; background-color: #f4f4f9; color: #333; padding: 20px; }
+        .header-container { text-align: center; margin-bottom: 20px; }
+        #torrent-update-status { padding: 10px; font-weight: bold; border-radius: 5px; background-color: #e0e0e0; color: #555; transition: background-color 0.5s; margin-bottom: 10px; }
+        .button-group button { border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; margin: 0 5px; }
+        #save-order-btn { background-color: #28a745; color: white; } #restore-btn { background-color: #dc3545; color: white; }
+        .site-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .site-card { background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; padding: 15px; transition: all 0.2s; position: relative; overflow: hidden; }
+        .site-card .rank { position: absolute; top: 0; left: 0; background-color: #1f976d; color: white; font-weight: bold; padding: 5px 10px; border-bottom-right-radius: 8px; font-size: 14px; }
+        .site-card .logo-container { height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; }
+        
+        /* --- 이미지 스케일 수정 --- */
+        .site-card .logo-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* 이미지가 비율을 유지하며 컨테이너 안에 맞도록 설정 */
+        }
+
+        .site-card h3 { font-size: 16px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .drag-handle { position: absolute; top: 50%; left: 5px; transform: translateY(-50%); width: 20px; height: 30px; cursor: move; color: #ccc; font-size: 20px; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
+        .site-card:hover .drag-handle { opacity: 1; }
+        .remove-btn { position: absolute; top: 5px; right: 5px; width: 24px; height: 24px; background-color: #ff4d4d; color: white; border: none; border-radius: 50%; font-size: 16px; line-height: 24px; text-align: center; cursor: pointer; opacity: 0.7; }
+        .search-section { max-width: 1200px; margin: 50px auto 20px auto; padding-top: 30px; border-top: 2px solid #ddd; }
+        .search-section h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        .search-forms-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .search-form { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex: 1; min-width: 280px; max-width: 350px; }
+        .search-form label { display: block; font-weight: bold; margin-bottom: 10px; color: #337ab7; }
+        .search-form input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; margin-bottom: 10px; }
+        .search-form button { width: 100%; padding: 10px; background-color: #337ab7; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <!-- H1 제목 제거 -->
+        <div id="torrent-update-status"></div>
+        <div class="button-group">
+            <button id="save-order-btn">순서 저장</button>
+            <button id="restore-btn">제거/순서 초기화</button>
+        </div>
+    </div>
+    <div class="site-container"></div>
+    <section class="search-section">
+        <h2>통합 검색</h2>
+        <div class="search-forms-container">
+            <form class="search-form" action="https://kr.bt4gprx.com/search" method="GET" target="_blank"><label>BT4GPRX</label><input type="text" name="q" placeholder="검색어" required><button type="submit">검색</button></form>
+            <form class="search-form" action="https://en.btdig.com/search" method="GET" target="_blank"><label>BTDig</label><input type="text" name="q" placeholder="검색어" required><button type="submit">검색</button></form>
+            <form class="search-form" action="https://debridmediamanager.com/search" method="GET" target="_blank"><label>Debrid Media Manager</label><input type="text" name="query" placeholder="검색어" required><button type="submit">검색</button></form>
+        </div>
+    </section>
+
+    <script>
+        const torrentSiteData = [
+            { rank: 1, name: "토렌트랜드", img: "https://img.zzang11.com/UploadFile/20250704/064232토렌트랜드.png" }, { rank: 2, name: "토렌트큐큐", img: "https://img.zzang11.com/UploadFile/20241015/055733토렌트QQ.png" }, { rank: 3, name: "토렌트씨", img: "https://img.zzang11.com/UploadFile/20241017/024739토렌트씨.png" }, { rank: 4, name: "토렌트파이", img: "https://img.zzang11.com/UploadFile/20241017/044538토렌트파이.png" }, { rank: 5, name: "토렌트쓱", img: "https://img.zzang11.com/UploadFile/20241022/060107토렌트쓱.png" }, { rank: 6, name: "티프리카", img: "https://img.zzang11.com/UploadFile/20241017/024732티프리카.gif" }, { rank: 7, name: "토렌트봇", img: "https://img.zzang11.com/UploadFile/20241017/024815토렌트봇.png" }, { rank: 8, name: "토렌트썸", img: "https://img.zzang11.com/UploadFile/20241017/024745토렌트썸.png" }, { rank: 9, name: "토렌트알지", img: "https://img.zzang11.com/UploadFile/20241017/024806토랜드알지.png" }, { rank: 10, name: "토렌트팁", img: "https://img.zzang11.com/UploadFile/20241017/024830토렌트팁.png" }, { rank: 11, name: "토렌트밤", img: "https://img.zzang11.com/UploadFile/20241017/044545토렌트밤.png" }, { rank: 12, name: "토다와", img: "https://img.zzang11.com/UploadFile/20241017/044517토다와.gif" }, { rank: 13, name: "토렌트티티", img: "https://img.zzang11.com/UploadFile/20241017/044558토렌트티티.png" }, { rank: 14, name: "토렌트모바일", img: "https://img.zzang11.com/UploadFile/20241017/044608토렌트모바일.png" }, { rank: 15, name: "토팡", img: "https://img.zzang11.com/UploadFile/20241017/044617토팡.png" }, { rank: 16, name: "토렌트지", img: "https://img.zzang11.com/UploadFile/20241022/060142토렌트지.png" }, { rank: 17, name: "섹토렌트", img: "https://img.zzang11.com/UploadFile/20241017/044648섹토렌트.gif" }, { rank: 18, name: "토렌트와이", img: "https://img.zzang11.com/UploadFile/20241022/060227토렌트와이.png" }, { rank: 19, name: "토렌트하하", img: "https://img.zzang11.com/UploadFile/20241022/060248토렌트하하.png" }, { rank: 20, name: "토렌트영", img: "https://img.zzang11.com/UploadFile/20241022/055148토렌트영.png" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const siteContainer = document.querySelector('.site-container');
+            torrentSiteData.forEach(site => { const card = document.createElement('div'); card.className = 'site-card'; card.innerHTML = `<div class="drag-handle">☰</div><button class="remove-btn">×</button><span class="rank">${site.rank}</span><a href="#" target="_blank" data-site-name="${site.name}"><div class="logo-container"><img src="${site.img}"></div><h3>${site.name}</h3></a>`; siteContainer.appendChild(card); });
+            const STORAGE_KEY_REMOVED = 'removedTorrentSites', STORAGE_KEY_ORDER = 'torrentSiteOrder', torrentStatusDiv = document.getElementById('torrent-update-status'), restoreBtn = document.getElementById('restore-btn'), saveOrderBtn = document.getElementById('save-order-btn'), PROXY_URL = 'https://cors.eu.org/';
+            function applySavedOrder() { const savedOrder = JSON.parse(localStorage.getItem(STORAGE_KEY_ORDER)); if (!savedOrder) return; const itemsMap = new Map([...siteContainer.children].map(card => [card.querySelector('a').dataset.siteName, card])); savedOrder.forEach(siteName => { const card = itemsMap.get(siteName); if (card) siteContainer.appendChild(card); }); }
+            function applyRemovedSites() { const removedSites = JSON.parse(localStorage.getItem(STORAGE_KEY_REMOVED)) || []; removedSites.forEach(siteName => { const siteCard = document.querySelector(`a[data-site-name="${siteName}"]`)?.closest('.site-card'); if (siteCard) siteCard.style.display = 'none'; }); }
+            siteContainer.addEventListener('click', function(event) { if (event.target.classList.contains('remove-btn')) { const siteCard = event.target.closest('.site-card'); const siteName = siteCard.querySelector('a').dataset.siteName; const removedSites = JSON.parse(localStorage.getItem(STORAGE_KEY_REMOVED)) || []; if (!removedSites.includes(siteName)) { removedSites.push(siteName); localStorage.setItem(STORAGE_KEY_REMOVED, JSON.stringify(removedSites)); } siteCard.style.display = 'none'; } });
+            saveOrderBtn.addEventListener('click', function() { const currentOrder = [...siteContainer.children].map(card => card.querySelector('a').dataset.siteName); localStorage.setItem(STORAGE_KEY_ORDER, JSON.stringify(currentOrder)); alert('순서가 저장되었습니다!'); });
+            restoreBtn.addEventListener('click', function() { if (confirm('제거/순서를 초기화하시겠습니까?')) { localStorage.removeItem(STORAGE_KEY_REMOVED); localStorage.removeItem(STORAGE_KEY_ORDER); alert('초기화 완료. 페이지를 새로고침합니다.'); location.reload(); } });
+            new Sortable(siteContainer, { handle: '.drag-handle', animation: 150 });
+            function fetchLatestTorrentUrls() { torrentStatusDiv.textContent = '토렌트 주소 업데이트 중...'; const targetUrl = 'https://www.zzang11.com/List/%ED%86%A0%EB%A0%8C%ED%8A%B8'; fetch(PROXY_URL + targetUrl).then(res => res.ok ? res.text() : Promise.reject(res.status)).then(html => { const doc = new DOMParser().parseFromString(html, 'text/html'); let updatedCount = 0; doc.querySelectorAll('.siteList').forEach(site => { const name = site.querySelector('h3')?.innerText.trim().replace(/（.*/, '').trim(); const newUrl = site.querySelector('a')?.href; if (name && newUrl) { const link = document.querySelector(`a[data-site-name="${name}"]`); if (link) { link.href = newUrl; updatedCount++; } } }); torrentStatusDiv.textContent = `업데이트 완료! ${updatedCount}개 주소 갱신.`; torrentStatusDiv.style.backgroundColor = '#d4edda'; }).catch(e => { torrentStatusDiv.textContent = '오류: 토렌트 주소를 가져오지 못했습니다.'; torrentStatusDiv.style.backgroundColor = '#f8d7da'; }); }
+            
+            applySavedOrder(); 
+            applyRemovedSites(); 
+            fetchLatestTorrentUrls();
+        });
+    </script>
+</body>
+</html>
